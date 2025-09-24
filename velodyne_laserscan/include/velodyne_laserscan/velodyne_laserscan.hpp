@@ -37,6 +37,8 @@
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
+#include <string>
+
 namespace velodyne_laserscan
 {
 
@@ -60,6 +62,7 @@ private:
   uint16_t ring_count_{0};
   int ring_;
   double resolution_;
+  std::string ring_field_name_;
 };
 
 }  // namespace velodyne_laserscan
