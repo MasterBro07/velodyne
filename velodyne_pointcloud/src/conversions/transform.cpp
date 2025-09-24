@@ -45,7 +45,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_components/register_node_macro.hpp>
 
+#include "velodyne_pointcloud/organized_cloudXYZIRCAEDT.hpp"
 #include "velodyne_pointcloud/organized_cloudXYZIRT.hpp"
+#include "velodyne_pointcloud/pointcloudXYZIRCAEDT.hpp"
 #include "velodyne_pointcloud/pointcloudXYZIRT.hpp"
 #include "velodyne_pointcloud/rawdata.hpp"
 
@@ -107,14 +109,27 @@ Transform::Transform(const rclcpp::NodeOptions & options)
 
   data_ = std::make_unique<velodyne_rawdata::RawData>(calibration_file, model);
 
+  const bool use_extended_fields = (model == "VLP16");
   if (organize_cloud) {
-    container_ptr_ = std::make_unique<OrganizedCloudXYZIRT>(
-      min_range, max_range, target_frame, fixed_frame, data_->numLasers(),
-      data_->scansPerPacket(), this->get_clock());
+    if (use_extended_fields) {
+      container_ptr_ = std::make_unique<OrganizedCloudXYZIRCAEDT>(
+        min_range, max_range, target_frame, fixed_frame, data_->numLasers(),
+        data_->scansPerPacket(), this->get_clock());
+    } else {
+      container_ptr_ = std::make_unique<OrganizedCloudXYZIRT>(
+        min_range, max_range, target_frame, fixed_frame, data_->numLasers(),
+        data_->scansPerPacket(), this->get_clock());
+    }
   } else {
-    container_ptr_ = std::make_unique<PointcloudXYZIRT>(
-      min_range, max_range, target_frame, fixed_frame,
-      data_->scansPerPacket(), this->get_clock());
+    if (use_extended_fields) {
+      container_ptr_ = std::make_unique<PointcloudXYZIRCAEDT>(
+        min_range, max_range, target_frame, fixed_frame,
+        data_->scansPerPacket(), this->get_clock());
+    } else {
+      container_ptr_ = std::make_unique<PointcloudXYZIRT>(
+        min_range, max_range, target_frame, fixed_frame,
+        data_->scansPerPacket(), this->get_clock());
+    }
   }
 
   // advertise output point cloud (before subscribing to input data)

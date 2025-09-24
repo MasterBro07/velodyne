@@ -60,6 +60,8 @@ target_link_libraries(velodyne_rawdata PUBLIC
 )
 
 add_library(velodyne_cloud_types SHARED
+  src/lib/organized_cloudXYZIRCAEDT.cpp
+  src/lib/pointcloudXYZIRCAEDT.cpp
   src/lib/pointcloudXYZIRT.cpp
   src/lib/organized_cloudXYZIRT.cpp
 )
