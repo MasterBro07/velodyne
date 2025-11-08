@@ -7,7 +7,8 @@ Velodyne<sup>1</sup> is a collection of ROS<sup>2</sup> packages supporting `Vel
 definition 3D LIDARs`<sup>3</sup>.
 
 **Warning**:
-
+  I edit this with Codex to create a functional workflow from the LiDAR to Autoware. 
+  The Original Repo had the format of XYZIRT and this one is giving the needed XYZIRCAEDT Format.
   The `<ros_distro>-devel` branch normally contains code being tested for the next
   ROS release.  It will not always work with every previous release.
   To check out the source for the most recent release, check out the
